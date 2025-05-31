@@ -8,6 +8,7 @@
     "dev": "nodemon server.js",
     "setup-db": "mysql -u root < database/schema.sql",
     "setup-admin": "node scripts/setup-admin.js",
+    "setup-admin-user": "node scripts/setup-admin-user.js",
     "fix-db": "fix-technology-stack.js"
   },
   "dependencies": {

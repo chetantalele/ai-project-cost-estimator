@@ -5,11 +5,14 @@ import Login from "./components/Login"
 import Register from "./components/Register"
 import Dashboard from "./components/Dashboard"
 import "./App.css"
+import AdminLogin from "./components/AdminLogin"
+import AdminDashboard from "./components/AdminDashboard"
 
 function App() {
   const [user, setUser] = useState(null)
   const [loading, setLoading] = useState(true)
   const [currentView, setCurrentView] = useState("login") // "login" or "register"
+  const [isAdmin, setIsAdmin] = useState(false)
 
   useEffect(() => {
     // Check if user is already logged in
@@ -18,7 +21,10 @@ function App() {
 
     if (token && userData) {
       try {
-        setUser(JSON.parse(userData))
+        const user = JSON.parse(userData)
+        setUser(user)
+        // Check if user is admin
+        setIsAdmin(user.email === "chetan.talele@mitaoe.ac.in")
       } catch (error) {
         localStorage.removeItem("token")
         localStorage.removeItem("user")
@@ -29,6 +35,7 @@ function App() {
 
   const handleLogin = (userData) => {
     setUser(userData)
+    setIsAdmin(userData.email === "chetan.talele@mitaoe.ac.in")
   }
 
   const handleRegister = (userData) => {
@@ -39,6 +46,7 @@ function App() {
     localStorage.removeItem("token")
     localStorage.removeItem("user")
     setUser(null)
+    setIsAdmin(false)
     setCurrentView("login")
   }
 
@@ -48,6 +56,11 @@ function App() {
 
   const switchToLogin = () => {
     setCurrentView("login")
+  }
+
+  const handleAdminLogin = (userData) => {
+    setUser(userData)
+    setIsAdmin(true)
   }
 
   if (loading) {
@@ -62,9 +75,15 @@ function App() {
   return (
     <div className="App">
       {user ? (
-        <Dashboard user={user} onLogout={handleLogout} />
+        isAdmin ? (
+          <AdminDashboard user={user} onLogout={handleLogout} />
+        ) : (
+          <Dashboard user={user} onLogout={handleLogout} />
+        )
       ) : currentView === "login" ? (
         <Login onLogin={handleLogin} onSwitchToRegister={switchToRegister} />
+      ) : currentView === "admin" ? (
+        <AdminLogin onAdminLogin={handleAdminLogin} />
       ) : (
         <Register onRegister={handleRegister} onSwitchToLogin={switchToLogin} />
       )}

@@ -81,9 +81,37 @@ const Login = ({ onLogin, onSwitchToRegister }) => {
               Create Account
             </button>
           </p>
+          <p style={{ marginTop: "10px" }}>
+            <button
+              onClick={() => (window.location.href = "/admin")}
+              className="admin-link"
+              style={{
+                background: "none",
+                border: "none",
+                color: "#1e3c72",
+                cursor: "pointer",
+                fontSize: "12px",
+                textDecoration: "underline",
+                fontWeight: "500",
+              }}
+            >
+              🔐 Admin Access
+            </button>
+          </p>
         </div>
 
-        
+        <div className="demo-credentials">
+          <h3>Demo Account</h3>
+          <p>
+            <strong>Email:</strong> admin@example.com
+          </p>
+          <p>
+            <strong>Password:</strong> admin123
+          </p>
+          <p className="demo-note">
+            Use these credentials to explore the application, or create your own account above.
+          </p>
+        </div>
       </div>
     </div>
   )
